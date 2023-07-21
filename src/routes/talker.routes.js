@@ -62,4 +62,37 @@ talkerRoutes.get('/:id', async (req, res) => {
   return res.status(HTTP_NOT_FOUND).json({ message: 'Pessoa palestrante não encontrada' });
 });
 
+// requisito 6
+async function updateTalker(id, updatedTalker) {
+  const file = await readFile();
+  const foundIndex = file.findIndex((person) => person.id === Number(id));
+  if (foundIndex === -1) {
+    throw new Error('Pessoa palestrante não encontrada');
+  }
+
+  const updatedData = {
+    ...file[foundIndex],
+    ...updatedTalker,
+  };
+
+  file[foundIndex] = updatedData;
+
+  await fs.writeFile(talkerPath, JSON.stringify(file));
+  return updatedData;
+}
+
+async function handleUpdateTalker(req, res) {
+  const { id } = req.params;
+  const { name, age, talk } = req.body;
+
+  try {
+    const updatedTalker = await updateTalker(id, { name, age, talk });
+    res.status(HTTP_OK_STATUS).json(updatedTalker);
+  } catch (error) {
+    res.status(HTTP_NOT_FOUND).json({ message: error.message });
+  }
+}
+
+talkerRoutes.put('/:id', validateToken, allValidationsTalker, handleUpdateTalker);
+
 module.exports = talkerRoutes;
