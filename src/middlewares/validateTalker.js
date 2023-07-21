@@ -1,3 +1,5 @@
+const validator = require('validator');
+
 // requisito 5
 const validateName = (req, res, next) => {
   const { name } = req.body;
@@ -24,26 +26,6 @@ const validateAge = (req, res, next) => {
   next();
 };
 
-// function isValidDateFormat(dateString) {
-//   return true;
-//   const datePattern = /^\d{2}\/\d{2}\/\d{4}$/;
-
-//   if (!datePattern.test(dateString)) {
-//     return false;
-//   }
-
-//   const [day, month, year] = dateString.split('/');
-
-//   // Create a new Date object using the parsed components
-//   const dateObj = new Date(`${year}-${month}-${day}`);
-
-//   // Check if the Date object represents a valid date
-//   return !Number.isNaN(dateObj)
-//     && dateObj.getDate() === parseInt(day, 10)
-//     && dateObj.getMonth() + 1 === parseInt(month, 10)
-//     && dateObj.getFullYear() === parseInt(year, 10);
-// }
-
 const validateTalk = (req, res, next) => {
   const { talk } = req.body;
 
@@ -61,7 +43,7 @@ const validateWatchedAt = (req, res, next) => {
     return res.status(400).json({ message: 'O campo "watchedAt" é obrigatório' });
   }
 
-  if (!isValidDateFormat(watchedAt)) {
+  if (!validator.isDate(watchedAt, { format: 'DD/MM/YYYY' })) {
     return res.status(400).json({ message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"' });
   }
   next();
@@ -82,9 +64,11 @@ const validateRate = (req, res, next) => {
 
 const validateToken = (req, res, next) => {
   const { authorization } = req.headers;
+  console.log(authorization)
   if (!authorization) {
     return res.status(401).json({ message: 'Token não encontrado' });
   }
+
   if (typeof authorization !== 'string' || authorization.length !== 16) {
     return res.status(401).json({ message: 'Token inválido' });
   }
@@ -100,6 +84,6 @@ const allValidationsTalker = [
 ];
 
 module.exports = {
-  allValidationsTalker,
   validateToken,
+  allValidationsTalker,
 };

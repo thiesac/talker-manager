@@ -35,7 +35,7 @@ async function findLastID() {
   }
 }
 
-talkerRoutes.post('/', allValidationsTalker, validateToken, async (req, res) => {
+talkerRoutes.post('/', validateToken, allValidationsTalker, async (req, res) => {
   const { name, age, talk } = req.body;
   const previousTalkersList = await readFile();
 

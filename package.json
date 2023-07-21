@@ -17,7 +17,8 @@
   "dependencies": {
     "express": "4.17.1",
     "express-rescue": "1.1.30",
-    "mysql2": "2.3.3"
+    "mysql2": "2.3.3",
+    "validator": "^13.9.0"
   },
   "devDependencies": {
     "chai": "4.3.4",
