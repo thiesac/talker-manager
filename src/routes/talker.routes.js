@@ -51,6 +51,25 @@ talkerRoutes.post('/', validateToken, allValidationsTalker, async (req, res) => 
   res.status(HTTP_CREATED).json(addNewTalker);
 });
 
+// requisito 8
+talkerRoutes.get('/search', validateToken, async (req, res) => {
+  try {
+    const { q } = req.query;
+    const file = await readFile();
+    const found = file.filter((person) => person.name.includes(q));
+  
+    if (q === undefined) {
+      return res.status(HTTP_OK_STATUS).json(file);
+    }
+    if (q === '') {
+      return res.status(HTTP_OK_STATUS).json(file);
+    }
+    return res.status(HTTP_OK_STATUS).json(found);
+  } catch (error) {
+    res.status(HTTP_NOT_FOUND).json();
+  }
+});
+
 // requisito 2
 talkerRoutes.get('/:id', async (req, res) => {
   const { id } = req.params;
