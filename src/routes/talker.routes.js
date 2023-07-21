@@ -8,7 +8,7 @@ const talkerPath = path.resolve(__dirname, '../talker.json');
 
 const HTTP_OK_STATUS = 200;
 const HTTP_CREATED = 201;
-// const HTTP_BAD_REQUEST = 400;
+const HTTP_NO_CONTENT = 204;
 const HTTP_NOT_FOUND = 404;
 
 // requisito 1
@@ -94,5 +94,20 @@ async function handleUpdateTalker(req, res) {
 }
 
 talkerRoutes.put('/:id', validateToken, allValidationsTalker, handleUpdateTalker);
+
+// requisito 7
+talkerRoutes.delete('/:id', validateToken, async (req, res) => {
+  const { id } = req.params;
+
+  const file = await readFile();
+  const found = file.find((person) => person.id === Number(id));
+
+  if (!found) {
+    return res.status(HTTP_NOT_FOUND).json({ message: 'Pessoa palestrante não encontrada' });
+  }
+  const nonDeletedTalkers = file.filter((person) => person.id !== Number(id));
+  await fs.writeFile(talkerPath, JSON.stringify(nonDeletedTalkers));
+  res.status(HTTP_NO_CONTENT).send();
+});
 
 module.exports = talkerRoutes;
