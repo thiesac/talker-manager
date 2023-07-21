@@ -1,7 +1,7 @@
 const talkerRoutes = require('express').Router();
 const fs = require('fs').promises;
 const path = require('path');
-const allValidationsTalker = require('../middlewares/validateTalker');
+const { allValidationsTalker, validateToken } = require('../middlewares/validateTalker');
 const readFile = require('../readFile');
 
 const talkerPath = path.resolve(__dirname, '../talker.json');
@@ -35,7 +35,7 @@ async function findLastID() {
   }
 }
 
-talkerRoutes.post('/', allValidationsTalker, async (req, res) => {
+talkerRoutes.post('/', allValidationsTalker, validateToken, async (req, res) => {
   const { name, age, talk } = req.body;
   const previousTalkersList = await readFile();
 

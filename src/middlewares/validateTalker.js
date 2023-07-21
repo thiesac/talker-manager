@@ -24,24 +24,25 @@ const validateAge = (req, res, next) => {
   next();
 };
 
-function isValidDateFormat(dateString) {
-  const datePattern = /^\d{2}\/\d{2}\/\d{4}$/;
+// function isValidDateFormat(dateString) {
+//   return true;
+//   const datePattern = /^\d{2}\/\d{2}\/\d{4}$/;
 
-  if (!datePattern.test(dateString)) {
-    return false;
-  }
+//   if (!datePattern.test(dateString)) {
+//     return false;
+//   }
 
-  const [day, month, year] = dateString.split('/');
+//   const [day, month, year] = dateString.split('/');
 
-  // Create a new Date object using the parsed components
-  const dateObj = new Date(`${year}-${month}-${day}`);
+//   // Create a new Date object using the parsed components
+//   const dateObj = new Date(`${year}-${month}-${day}`);
 
-  // Check if the Date object represents a valid date
-  return !Number.isNaN(dateObj)
-    && dateObj.getDate() === parseInt(day, 10)
-    && dateObj.getMonth() + 1 === parseInt(month, 10)
-    && dateObj.getFullYear() === parseInt(year, 10);
-}
+//   // Check if the Date object represents a valid date
+//   return !Number.isNaN(dateObj)
+//     && dateObj.getDate() === parseInt(day, 10)
+//     && dateObj.getMonth() + 1 === parseInt(month, 10)
+//     && dateObj.getFullYear() === parseInt(year, 10);
+// }
 
 const validateTalk = (req, res, next) => {
   const { talk } = req.body;
@@ -69,12 +70,23 @@ const validateWatchedAt = (req, res, next) => {
 const validateRate = (req, res, next) => {
   const { talk: { rate } } = req.body;
 
-  if (!rate) {
+  if (rate === undefined) {
     return res.status(400).json({ message: 'O campo "rate" é obrigatório' });
   }
-  if (rate < 1 && rate > 5) {
+  if (!Number.isInteger(rate) || rate < 1 || rate > 5) {
     return res.status(400)
       .json({ message: 'O campo "rate" deve ser um número inteiro entre 1 e 5' });
+  }
+  next();
+};
+
+const validateToken = (req, res, next) => {
+  const { authorization } = req.headers;
+  if (!authorization) {
+    return res.status(401).json({ message: 'Token não encontrado' });
+  }
+  if (typeof authorization !== 'string' || authorization.length !== 16) {
+    return res.status(401).json({ message: 'Token inválido' });
   }
   next();
 };
@@ -87,4 +99,7 @@ const allValidationsTalker = [
   validateRate,
 ];
 
-module.exports = allValidationsTalker;
+module.exports = {
+  allValidationsTalker,
+  validateToken,
+};
