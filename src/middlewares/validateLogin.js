@@ -1,3 +1,4 @@
+// requisito 4
 const validateEmail = (req, res, next) => {
   const { email } = req.body;
   const emailRegex = new RegExp(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/);
