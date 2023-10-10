@@ -72,3 +72,7 @@ Contributions to Talker Manager are welcome! If you find any issues or have idea
 3. Make changes and commit them.
 4. Push the changes to your fork.
 5. Submit a pull request to the `main` branch of the original repository.
+
+## Acknowledgments
+
+I would like to acknowledge and express my gratitude to [Trybe](https://www.betrybe.com/) for their support and guidance throughout the development of this educational resource.
