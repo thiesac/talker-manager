@@ -6,10 +6,9 @@ Talker Manager is a web application that allows users to manage and organize tal
 
 The application enables users to perform various tasks related to talk proposals, including submitting new proposals, reviewing existing ones, and accepting or rejecting talks based on their suitability for the event.
 
-## Table of Contents (Optional)
+## Table of Contents
 
 - [Features](#features)
-- [Demo](#demo)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Technologies](#technologies)
@@ -17,8 +16,6 @@ The application enables users to perform various tasks related to talk proposals
 - [License](#license)
 
 ## Features
-
-- User-friendly interface to submit talk proposals.
 - Review and manage talk proposals as an organizer/administrator.
 - Accept or reject talk proposals based on the event's criteria.
 - View a list of all submitted talk proposals.
